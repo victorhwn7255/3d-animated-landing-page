@@ -5,6 +5,7 @@ export default class Loop {
     this.app = new App()
     this.camera = this.app.camera
     this.renderer = this.app.renderer
+    this.world = this.app.world
 
     this.loop()
 
@@ -13,6 +14,7 @@ export default class Loop {
   loop(){
     this.camera.loop()
     this.renderer.loop()
+    this.world.loop()
     window.requestAnimationFrame(() => this.loop())
   }
 

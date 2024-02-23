@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { sizesStore } from "./utils/Store";
 
 import App from "./App";
 
@@ -7,6 +8,8 @@ export default class Camera {
   constructor() {
     this.app = new App()
     this.canvas = this.app.canvas
+
+    this.sizes = sizesStore.getState()
 
     this.setInstance()
     this.setControls()
@@ -16,7 +19,7 @@ export default class Camera {
   setInstance() {
     this.instance = new THREE.PerspectiveCamera(
       35,
-      window.innerWidth / window.innerHeight,
+      this.sizes.width / this.sizes.height,
       0.1,
       200
     );

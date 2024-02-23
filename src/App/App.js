@@ -18,8 +18,8 @@ export default class App {
     this.scene = new THREE.Scene()
     this.camera = new Camera()
     this.renderer = new Renderer()
-    this.loop = new Loop()
     this.world = new World()
+    this.loop = new Loop()
 
   }
 }
