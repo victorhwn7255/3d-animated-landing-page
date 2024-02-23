@@ -9,9 +9,11 @@ export default class Renderer {
     this.camera = this.app.camera
     this.scene = this.app.scene
 
-    this.sizes = sizesStore.getState()
+    this.sizesStore = sizesStore
+    this.sizes = this.sizesStore.getState()
 
     this.setInstance()
+    this.setResizeListener()
 
   }
 
@@ -27,6 +29,13 @@ export default class Renderer {
 
   loop() {
     this.instance.render(this.scene, this.camera.instance)
+  }
+
+  setResizeListener() {
+    this.sizesStore.subscribe((newSizes) => {
+      this.instance.setSize(newSizes.width, newSizes.height)
+      this.instance.setPixelRatio(newSizes.pixelRatio)
+    })
   }
 
 }
