@@ -1,26 +1,33 @@
-import * as THREE from "three";
-import App from "../App";
+import * as THREE from 'three'
 
-export default class World {
-  constructor() {
-    this.app = new App()
-    this.scene = this.app.scene
+import App from '../App.js'
 
-    this.setCube()
-    this.loop()
+export default class World{
+    constructor() {
+        this.app = new App()
+        this.scene = this.app.scene
 
-  }
 
-  setCube() {
-    this.cubeMesh = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 1, 1),
-      new THREE.MeshBasicMaterial({ color: "blue" })
-    )
-    this.scene.add(this.cubeMesh)
-  }
+        this.setCube()
+        this.loop()
+    }
 
-  loop() {
-    this.cubeMesh.rotation.y += 0.01
-  }
+    setCube() {
 
+        this.cubeMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+        );
+
+        this.scene.add(this.cubeMesh)
+
+    } 
+
+
+    loop() {
+
+        this.cubeMesh.rotation.y += 0.01
+
+
+    }
 }
