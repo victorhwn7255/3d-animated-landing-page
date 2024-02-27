@@ -13,7 +13,7 @@ export default class World {
   constructor() {
     this.app = new App();
     this.scene = this.app.scene;
-
+    
     this.physics = new Physics();
 
     // create world classes
@@ -22,8 +22,7 @@ export default class World {
         this.environment = new Environment();
         this.character = new Character();
         this.characterController = new CharacterController();
-        this.animationController = new AnimationController()
-
+        this.animationController = new AnimationController();
         unsub();
       }
     });
@@ -34,7 +33,6 @@ export default class World {
   loop(deltaTime, elapsedTime) {
     this.physics.loop();
     if(this.characterController) this.characterController.loop();
-
     if(this.animationController) this.animationController.loop(deltaTime);
   }
 }

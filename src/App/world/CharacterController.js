@@ -39,7 +39,7 @@ export default class CharacterController {
     this.rigidBody = this.physics.world.createRigidBody(this.rigidBodyType);
 
     // Create a cuboid collider
-    this.colliderType = this.physics.rapier.ColliderDesc.cuboid(1, 3, 1);
+    this.colliderType = this.physics.rapier.ColliderDesc.cuboid(.3, 1, .3);
     this.collider = this.physics.world.createCollider(
       this.colliderType,
       this.rigidBody
@@ -54,7 +54,8 @@ export default class CharacterController {
     this.rigidBody.setRotation(worldRotation);
 
     // Create character controller, set properties, and enable autostepping
-    this.characterController = this.physics.world.createCharacterController(0.01);
+    this.characterController =
+      this.physics.world.createCharacterController(0.01);
     this.characterController.setApplyImpulsesToDynamicBodies(true);
     this.characterController.enableAutostep(5, 0.1, false);
     this.characterController.enableSnapToGround(1);
@@ -78,17 +79,19 @@ export default class CharacterController {
     if (this.right) {
       movement.x += 1;
     }
-    if(movement.length() !== 0){
-      const angle = Math.atan2(movement.x, movement.z) + Math.PI
+
+    // Rotate character based on movement vector
+    if (movement.length() !== 0) {
+      const angle = Math.atan2(movement.x, movement.z) + Math.PI;
       const characterRotation = new THREE.Quaternion().setFromAxisAngle(
         new THREE.Vector3(0, 1, 0),
         angle
-      )
-      this.character.quaternion.slerp(characterRotation, 0.09)
+      );
+      this.character.quaternion.slerp(characterRotation, 0.1);
     }
 
     // Normalize and scale movement vector and set y component to -1
-    movement.normalize().multiplyScalar(0.3);
+    movement.normalize().multiplyScalar(0.1);
     movement.y = -1;
 
     // Update collider movement and get new position of rigid body
@@ -96,9 +99,9 @@ export default class CharacterController {
     const newPosition = new THREE.Vector3()
       .copy(this.rigidBody.translation())
       .add(this.characterController.computedMovement());
-    
+
     // Set next kinematic translation of rigid body and update character position
     this.rigidBody.setNextKinematicTranslation(newPosition);
-    this.character.position.lerp(this.rigidBody.translation(), 0.15);
+    this.character.position.lerp(this.rigidBody.translation(), 0.1);
   }
 }

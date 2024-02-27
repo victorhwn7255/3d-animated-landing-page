@@ -8,23 +8,27 @@ export default class Character {
     this.scene = this.app.scene;
     this.assetStore = assetStore.getState()
     this.avatar = this.assetStore.loadedAssets.avatar
-    console.log(this.avatar);
+    // console.log(this.avatar)
 
+    this.instantiateCharacter();
+  }
+
+  instantiateCharacter() {
     // create character and add to scene
-    const geometry = new THREE.BoxGeometry(2, 6, 2);
+    const geometry = new THREE.BoxGeometry(.6, 2, .6);
     const material = new THREE.MeshStandardMaterial({
       color: 0x00ff00,
       wireframe: true,
       visible: false,
     });
     this.instance = new THREE.Mesh(geometry, material);
-    this.instance.position.set(0, 3.9, 0);
+    this.instance.position.set(0, 4, 0);
     this.scene.add(this.instance);
 
+    // add avatar to character
     const avatar = this.avatar.scene
     avatar.rotation.y = Math.PI
-    avatar.position.y = -3
-    avatar.scale.setScalar(3)
+    avatar.position.y = -1
     this.instance.add(avatar)
   }
 }
