@@ -26,11 +26,61 @@ export default class Environment {
     environmentScene.rotation.set(0, -0.60, 0)
     environmentScene.scale.setScalar(1.5)
 
-    environmentScene.traverse((obj) => {
-      if(obj.isMesh) {
-        this.physics.add(obj, "fixed", "cuboid")
+    const physicalObjects = ['trees',
+    'terrain',
+    'rocks',
+    'stairs',
+    'gates',
+    'floor',
+    'bushes'
+    ]
+
+    const shadowCasters = ['trees',
+      'terrain',
+      'rocks',
+      'stairs',
+      'gates',
+      'bushes'
+    ]
+
+    const shadowReceivers = ['floor',
+    'terrain'
+    ]
+
+    for (const child of environmentScene.children) {
+      const isPhysicalObject = physicalObjects.some((keyword) => child.name.includes(keyword))
+      if (isPhysicalObject) {
+        child.traverse((obj) => {
+          if (obj.isMesh) {
+            this.physics.add(obj, "fixed", "cuboid")
+          }
+        })
       }
-    })
+
+      const isShadowCaster = shadowCasters.some((keyword) => child.name.includes(keyword))
+      if (isShadowCaster) {
+        child.traverse((obj) => {
+          if (obj.isMesh) {
+            obj.castShadow = true
+          }
+        })
+      }
+
+      const isShadowReceiver = shadowReceivers.some((keyword) => child.name.includes(keyword))
+      if (isShadowReceiver) {
+        child.traverse((obj) => {
+          if (obj.isMesh) {
+            obj.receiveShadow = true
+          }
+        })
+      }
+    }
+
+    // environmentScene.traverse((obj) => {
+    //   if(obj.isMesh) {
+    //     this.physics.add(obj, "fixed", "cuboid")
+    //   }
+    // })
   }
 
 
@@ -41,7 +91,13 @@ export default class Environment {
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.directionalLight.position.set(1, 1, 1);
     this.directionalLight.castShadow = true;
-    this.scene.add(this.directionalLight);
+    this.directionalLight.shadow.camera.top = 30
+    this.directionalLight.shadow.camera.right = 30
+    this.directionalLight.shadow.camera.left = -30
+    this.directionalLight.shadow.camera.bottom = -30
+    this.directionalLight.shadow.bias = -0.002
+    this.directionalLight.shadow.normalBias = 0.072
+     this.scene.add(this.directionalLight);
   }
 
 }
